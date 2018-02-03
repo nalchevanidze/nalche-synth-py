@@ -14,7 +14,6 @@ class AppScreen:
         frame.pack();
         self.frame = frame;
         self.cont = cont;
-        self.func = lambda (level): cont.up(level);
         self.canvas = RangeButton(frame,self.add_more,60);
         self.canvas.pack(
             side=LEFT
@@ -26,13 +25,13 @@ class AppScreen:
             frame, 
             text="QUIT", 
             fg="red",
-            command= self.end
+            command= self.close
         )
         self.button.pack(side=LEFT);
 
         master.mainloop();
 
-    def end(self):
+    def close(self):
         self.cont.stop() 
         self.frame.quit()
         self.root.destroy()
@@ -42,7 +41,7 @@ class AppScreen:
             self.level = level;
         self.canvas.delete("all");
         self.canvas.drawLines(self.level);
-        self.func(level);
+        self.cont.up(level);
 
 
 
