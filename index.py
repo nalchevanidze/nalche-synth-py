@@ -9,7 +9,8 @@ class AppScreen:
     def __init__(self,cont):
         master = Tk();
         frame = Frame(master);
-        master.configure(background='#444')
+        master.configure(background='#444');
+        self.root = master;
         frame.pack();
         self.frame = frame;
         self.cont = cont;
@@ -34,6 +35,8 @@ class AppScreen:
     def end(self):
         self.cont.stop() 
         self.frame.quit()
+        self.root.destroy()
+     
     def add_more(self, level ):
         if( level < 100):
             self.level = level;
@@ -45,7 +48,7 @@ class AppScreen:
 
 class Controller:
     def __init__(self):
-        self.frequency = 120;
+        self.frequency = 441;
         self.live = True;
     def stop(self):
         self.live = False;
@@ -60,17 +63,20 @@ def audioLoop(cont,m):
     audio = audioProcessing.AudioProcessor();
     while(cont.live):
         audio.tone(cont.frequency);
+    print("end of sound")
+    
       
 def panel(cont,m):
     app = AppScreen(cont);
+    print("close");
     
 
-# Create two threads as follows
 try:
     thread.start_new_thread( audioLoop, (controller,0) );
     thread.start_new_thread( panel , (controller,0) );
 except:
-   print "Error: unable to start thread"
+   print("Error: unable to start thread")
 
-while 1:
-   pass
+
+while controller.live:
+    pass;
