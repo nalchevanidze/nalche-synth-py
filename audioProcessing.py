@@ -5,7 +5,7 @@ from wave_looper import WaveLooper;
 from audio_config import SAMPLE_RATE;
 from sets import Set;
 
-LOOPSIZE = int(SAMPLE_RATE/100);
+LOOPSIZE = int(SAMPLE_RATE/4100);
 
 def sine(sounds):
     c = [];
