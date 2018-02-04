@@ -2,16 +2,14 @@ from math import sin, cos , pi , radians , atan2 ,floor
 from Tkinter import Canvas;
 
 def eventToDegre (event):
-    print (event.x, event.y);
+    #print (event.x, event.y);
     a = atan2(  event.y - 100 , event.x - 100);
     l = a;
     if( a < 0 ): l = 6 + a;
     return l/6.00;
 
-
-
 class RangeButton (Canvas):
-    def __init__(self,master, callBack, steps):
+    def __init__(self,master, callBack, level , steps = 60):
         Canvas.__init__(self,master,width=200, height=200)
         self.configure(
             background = "#444",
@@ -25,6 +23,9 @@ class RangeButton (Canvas):
         self.bind("<ButtonRelease>",self.endMoving);
         self.startPosition = 0;
         self.endLevel = 0;
+        self.level = level;
+        self.drawLines(level);
+
     def startMoving(self,event):
         print(event);
         self.startPosition = eventToDegre(event);
@@ -39,7 +40,15 @@ class RangeButton (Canvas):
             self.degree(event);
     def degree(self,event):
         l = eventToDegre(event) - self.startPosition;
-        self.callBack(100 * l);
+        self.changeLavel(l);
+
+    def changeLavel(self, level ):
+        if( level < 100):
+            self.level = level;
+        self.delete("all");
+        self.drawLines(100 * self.level);
+        self.callBack(100 * level);
+
     def drawLines( self, level ):
         center = 100;
         radius1 = 80;

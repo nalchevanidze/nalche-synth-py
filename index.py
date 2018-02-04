@@ -14,13 +14,11 @@ class AppScreen:
         frame.pack();
         self.frame = frame;
         self.cont = cont;
-        self.canvas = RangeButton(frame,self.add_more,60);
+        self.canvas = RangeButton(frame,self.setPitch,10);
         self.canvas.pack(
             side=LEFT
         );
         self.level = 10;
-        self.canvas.drawLines(self.level);
-
         self.button = Button(
             frame, 
             text="QUIT", 
@@ -28,19 +26,14 @@ class AppScreen:
             command= self.close
         )
         self.button.pack(side=LEFT);
-
         master.mainloop();
 
     def close(self):
         self.cont.stop() 
         self.frame.quit()
         self.root.destroy()
-     
-    def add_more(self, level ):
-        if( level < 100):
-            self.level = level;
-        self.canvas.delete("all");
-        self.canvas.drawLines(self.level);
+        
+    def setPitch(self, level ):
         self.cont.up(level);
 
 
