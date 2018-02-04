@@ -9,7 +9,7 @@ def eventToDegre (event):
     return l/6.00;
 
 class RangeButton (Canvas):
-    def __init__(self,master, callBack, level , steps = 60):
+    def __init__(self,master, callBack, level , steps = 12):
         Canvas.__init__(self,master,width=200, height=200)
         self.configure(
             background = "#444",

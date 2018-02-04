@@ -4,28 +4,29 @@ import audioProcessing
 import multiprocessing
 import thread;
 from buttons import RangeButton
+from keyboard import Keyboard
 
 class AppScreen:
     def __init__(self,cont):
         master = Tk();
         frame = Frame(master);
         master.configure(background='#444');
+        master.protocol("WM_DELETE_WINDOW", self.close );
         self.root = master;
         frame.pack();
         self.frame = frame;
         self.cont = cont;
+
         self.canvas = RangeButton(frame,self.setPitch,10);
         self.canvas.pack(
-            side=LEFT
+            side=TOP
         );
-        self.level = 10;
-        self.button = Button(
-            frame, 
-            text="QUIT", 
-            fg="red",
-            command= self.close
-        )
-        self.button.pack(side=LEFT);
+
+        self.keys = Keyboard(frame,cont.setNote);
+        self.keys.pack(
+            side=BOTTOM
+        );
+
         master.mainloop();
 
     def close(self):
@@ -42,8 +43,11 @@ class Controller:
     def __init__(self):
         self.frequency = 441;
         self.live = True;
+        self.notes = -1;
     def stop(self):
         self.live = False;
+    def setNote(self,note):
+        self.notes =  note;
     def up(self,level):
         print(level);
         self.frequency = floor(level * 440/100);
@@ -54,7 +58,8 @@ controller = Controller();
 def audioLoop(cont,m):
     audio = audioProcessing.AudioProcessor();
     while(cont.live):
-        audio.tone(cont.frequency);
+        if(cont.notes != -1):
+            audio.tone(cont.notes * 16);
     print("end of sound")
     
       
