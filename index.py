@@ -16,17 +16,10 @@ class AppScreen:
         frame.pack();
         self.frame = frame;
         self.cont = cont;
-
-        self.canvas = RangeButton(frame,self.setPitch,10);
-        self.canvas.pack(
-            side=TOP
-        );
-
+        self.pitcher = RangeButton(frame,self.setPitch,10);
+        self.pitcher.pack(side=TOP);
         self.keys = Keyboard(frame,cont.setNote);
-        self.keys.pack(
-            side=BOTTOM
-        );
-
+        self.keys.pack(side=BOTTOM);
         master.mainloop();
 
     def close(self):
@@ -37,8 +30,6 @@ class AppScreen:
     def setPitch(self, level ):
         self.cont.up(level);
 
-
-
 class Controller:
     def __init__(self):
         self.frequency = 441;
@@ -48,18 +39,20 @@ class Controller:
         self.live = False;
     def setNote(self,note):
         self.notes =  note;
+        self.play(note);
     def up(self,level):
         print(level);
         self.frequency = floor(level * 440/100);
 
 controller = Controller();
 
-
 def audioLoop(cont,m):
     audio = audioProcessing.AudioProcessor();
+    cont.play = audio.setNote;
+    
     while(cont.live):
-        if(cont.notes != -1):
-            audio.tone(cont.notes * 16);
+        audio.run(cont);
+
     print("end of sound")
     
       
