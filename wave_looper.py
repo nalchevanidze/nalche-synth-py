@@ -2,11 +2,10 @@ import math;
 from audio_config import SAMPLE_RATE;
 
 class WaveLooper:
-    def __init__(self):
+    def __init__(self, note = 0):
         self.state = 0;
-        self.frequency = 440;
-        self.stepSize = 0;
         self.waveSize =(math.pi * 2);
+        self.set(440 + note * 64 )
 
     def set(self, frequency = 440 ):
         self.frequency = frequency;

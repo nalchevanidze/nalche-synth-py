@@ -19,7 +19,7 @@ class AppScreen:
         self.cont = cont;
         self.pitcher = RangeButton(frame,self.setPitch,10);
         self.pitcher.pack(side=TOP);
-        self.keys = Keyboard(frame,cont.setNote);
+        self.keys = Keyboard(frame,cont);
         self.keys.pack(side=BOTTOM);
         master.mainloop();
     def close(self):
@@ -34,7 +34,8 @@ audio_system = AudioSystem();
 
 def audioLoop(cont,m):
     audio = audioProcessing.AudioProcessor();
-    cont.play = audio.setNote;
+    cont.setN = audio.setNote;
+    cont.unsetN = audio.unsetNote;
     
     while(cont.live):
         audio.run(cont);
