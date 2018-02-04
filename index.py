@@ -3,8 +3,9 @@ from Tkinter import *
 import audioProcessing
 import multiprocessing
 import thread;
-from buttons import RangeButton
-from keyboard import Keyboard
+from buttons import RangeButton;
+from keyboard import Keyboard;
+from synth_system import AudioSystem;
 
 class AppScreen:
     def __init__(self,cont):
@@ -21,7 +22,6 @@ class AppScreen:
         self.keys = Keyboard(frame,cont.setNote);
         self.keys.pack(side=BOTTOM);
         master.mainloop();
-
     def close(self):
         self.cont.stop() 
         self.frame.quit()
@@ -30,21 +30,7 @@ class AppScreen:
     def setPitch(self, level ):
         self.cont.up(level);
 
-class Controller:
-    def __init__(self):
-        self.frequency = 441;
-        self.live = True;
-        self.notes = -1;
-    def stop(self):
-        self.live = False;
-    def setNote(self,note):
-        self.notes =  note;
-        self.play(note);
-    def up(self,level):
-        print(level);
-        self.frequency = floor(level * 440/100);
-
-controller = Controller();
+audio_system = AudioSystem();
 
 def audioLoop(cont,m):
     audio = audioProcessing.AudioProcessor();
@@ -56,17 +42,17 @@ def audioLoop(cont,m):
     print("end of sound")
     
       
-def panel(cont,m):
+def panelLoop(cont,m):
     app = AppScreen(cont);
     print("close");
     
 
 try:
-    thread.start_new_thread( audioLoop, (controller,0) );
-    thread.start_new_thread( panel , (controller,0) );
+    thread.start_new_thread( audioLoop, (audio_system,0) );
+    thread.start_new_thread( panelLoop , (audio_system,0) );
 except:
    print("Error: unable to start thread")
 
 
-while controller.live:
+while audio_system.live:
     pass;
