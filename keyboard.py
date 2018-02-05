@@ -2,9 +2,12 @@ from math import sin, cos , pi , radians , atan2 ,floor
 from Tkinter import Canvas;
 
 def positionToNoteIndex (event):
-    print (event.x, event.y);
+    #print (event.x, event.y);
     a = event.x;
     return a;
+
+def keyEventToIndex(event):
+    return ord(event.char) - 96;
 
 
 class Keyboard (Canvas):
@@ -29,7 +32,19 @@ class Keyboard (Canvas):
         self.state = -1;
         self.bind("<Button>",self.onMouseDown);
         self.bind("<ButtonRelease>",self.onMouseUp);
+        master.bind_all("<KeyPress>", self.KeyPress);
+        master.bind_all("<KeyRelease>", self.KeyRelease);
         self.drawScene();
+    
+    def KeyPress(self,event):
+        note = keyEventToIndex(event);
+        self.tools.setNote(note);
+        self.updateState();
+    
+    def KeyRelease(self,event):
+        note = keyEventToIndex(event);
+        self.tools.unsetNote(note);
+        self.updateState();
 
     def noteFromEvent(self,event):
         return int(positionToNoteIndex(event) / self.keyWidth);

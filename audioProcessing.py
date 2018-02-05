@@ -5,7 +5,7 @@ from wave_looper import WaveLooper;
 from audio_config import SAMPLE_RATE;
 from sets import Set;
 
-LOOPSIZE = int(SAMPLE_RATE/4100);
+LOOPSIZE = int(SAMPLE_RATE/100);
 
 def sine(sounds):
     c = [];
@@ -13,7 +13,7 @@ def sine(sounds):
         value = 0;
 
         for sound in sounds:
-            value += math.sin(sound.next());
+            value += math.sin(sound.next()) * 0.25;
 
         c.append(value);
 
