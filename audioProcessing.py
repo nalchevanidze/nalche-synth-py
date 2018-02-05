@@ -26,6 +26,8 @@ soundSet = Set([]);
 soundList = [None] * 49;
 
 active = Set([]);
+addInNextEvent = Set([]);
+removeInNextEvent = Set([]);
 
 class AudioProcessor:
     def __init__(self):
@@ -37,9 +39,10 @@ class AudioProcessor:
             output=1   
         );
     def setNote(self,note):
+
         if(soundList[note] == None):
             soundEvent = WaveLooper(note);
-            active.add(soundEvent);
+            addInNextEvent.add(soundEvent);
             soundList[note] = soundEvent;
 
     def unsetNote(self,note):
@@ -47,7 +50,7 @@ class AudioProcessor:
         soundEvent = soundList[note];
 
         if(soundEvent != None):
-            active.remove(soundEvent);
+            removeInNextEvent.add(soundEvent);
             soundList[note] = None;
             
             
@@ -55,8 +58,12 @@ class AudioProcessor:
         if(cont.notes != -1):
             self.tone()
     def tone(self):
+
+        event = active.union(addInNextEvent).difference(removeInNextEvent);
+
+
         result = array.array('f',
-            sine(active)
+            sine(event)
         ).tostring();
 
         self.stream.write(result);

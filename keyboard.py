@@ -29,7 +29,6 @@ class Keyboard (Canvas):
             borderwidth = 0
         )
         
-        self.state = -1;
         self.bind("<Button>",self.onMouseDown);
         self.bind("<ButtonRelease>",self.onMouseUp);
         master.bind_all("<KeyPress>", self.KeyPress);
@@ -37,11 +36,13 @@ class Keyboard (Canvas):
         self.drawScene();
     
     def KeyPress(self,event):
+        print("press");
         note = keyEventToIndex(event);
         self.tools.setNote(note);
         self.updateState();
     
     def KeyRelease(self,event):
+        print("release");
         note = keyEventToIndex(event);
         self.tools.unsetNote(note);
         self.updateState();
