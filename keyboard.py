@@ -1,5 +1,5 @@
 from math import sin, cos , pi , radians , atan2 ,floor
-from Tkinter import Canvas;
+from tkinter import Canvas
 
 def positionToNoteIndex (event):
     #print (event.x, event.y);
