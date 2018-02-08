@@ -1,5 +1,36 @@
 from tkinter import Canvas
 
+keymap = (
+    "y",
+    "s",
+    "x",
+    "d",
+    "c",
+    "v",
+    "g",
+    "b",
+    "h",
+    "n",
+    "j",
+    "m",
+    "q",
+    "2",
+    "w",
+    "3",
+    "e",
+    "r",
+    "5",
+    "t",
+    "6",
+    "z",
+    "7",
+    "u"
+)
+
+
+def  key_to_note(event):
+    return keymap.index(event.char)
+
 def positionToNoteIndex (event):
     #print (event.x, event.y);
     a = event.x
@@ -10,6 +41,7 @@ def keyEventToIndex(event):
 
 
 class Keyboard (Canvas):
+
     def __init__(self, master, audio_system):
         self.keyWidth = 20
         self.keyHeigth =100
@@ -35,16 +67,16 @@ class Keyboard (Canvas):
         self.drawScene()
 
     def KeyPress(self,event):
-        print("press")
-        note = keyEventToIndex(event)
-        self.tools.setNote(note)
-        self.updateState()
+        if event.char in keymap:
+            note = key_to_note(event)
+            self.tools.setNote(note)
+            self.updateState()
     
     def KeyRelease(self,event):
-        print("release")
-        note = keyEventToIndex(event)
-        self.tools.unsetNote(note)
-        self.updateState()
+        if event.char in keymap:
+            note = key_to_note(event)
+            self.tools.unsetNote(note)
+            self.updateState()
 
     def noteFromEvent(self,event):
         return int(positionToNoteIndex(event) / self.keyWidth)
@@ -60,7 +92,7 @@ class Keyboard (Canvas):
     def updateState(self):
         self.drawScene()
 
-    def drawScene( self ):
+    def drawScene(self):
         self.delete("all")
         for i in range(0, self.keyCount):
             startX = i*self.keyWidth

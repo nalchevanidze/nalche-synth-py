@@ -1,12 +1,14 @@
 from tkinter import *
-import audioProcessing
+from audioProcessing import AudioProcessor
 from buttons import RangeButton
 from keyboard import Keyboard
 from synth_system import AudioSystem
 from threading import Thread
 
+
 class AppScreen:
-    def __init__(self,cont):
+
+    def __init__(self, cont):
         master = Tk()
         frame = Frame(master)
         master.configure(background='#444')
@@ -20,6 +22,7 @@ class AppScreen:
         self.keys = Keyboard(frame,cont)
         self.keys.pack(side=BOTTOM)
         master.mainloop()
+
     def close(self):
         self.cont.stop() 
         self.frame.quit()
@@ -28,34 +31,33 @@ class AppScreen:
     def setPitch(self, level ):
         self.cont.up(level)
 
+
 audio_system = AudioSystem()
 
 
 class AudioThread(Thread):
-    def __init__(self,cont ):
+
+    def __init__(self, cont ):
         Thread.__init__(self)
         self.cont = cont
 
     def run(self):
-        audio = audioProcessing.AudioProcessor()
-        self.cont.setN = audio.setNote
-        self.cont.unsetN = audio.unsetNote
+        audio = AudioProcessor(self.cont)
+        audio.start()
 
-        while(self.cont.live):
-            audio.run(self.cont)
-
-        print("end of TT")
 
 class GUIThread(Thread):
-    def __init__(self,cont ):
+
+    def __init__(self, cont):
         Thread.__init__(self)
         self.cont = cont
-    def run(self):
-        app = AppScreen(self.cont)
-        print("end of PP")
 
-audio_thread = AudioThread(audio_system);
-gui_thread = GUIThread(audio_system);
+    def run(self):
+        AppScreen(self.cont)
+
+
+audio_thread = AudioThread(audio_system)
+gui_thread = GUIThread(audio_system)
 audio_thread.start()
 gui_thread.start()
 
