@@ -1,9 +1,9 @@
 from tkinter import *
 import audioProcessing
-from _thread import start_new_thread
 from buttons import RangeButton
 from keyboard import Keyboard
 from synth_system import AudioSystem
+from threading import Thread
 
 class AppScreen:
     def __init__(self,cont):
@@ -30,28 +30,34 @@ class AppScreen:
 
 audio_system = AudioSystem()
 
-def audioLoop(cont,m):
-    audio = audioProcessing.AudioProcessor()
-    cont.setN = audio.setNote
-    cont.unsetN = audio.unsetNote
-    
-    while(cont.live):
-        audio.run(cont)
 
-    print("end of sound")
-    
-      
-def panelLoop(cont,m):
-    app = AppScreen(cont)
-    print("close")
-    
+class AudioThread(Thread):
+    def __init__(self,cont ):
+        Thread.__init__(self)
+        self.cont = cont
 
-try:
-    start_new_thread( audioLoop, (audio_system,0) )
-    start_new_thread( panelLoop , (audio_system,0) )
-except:
-   print("Error: unable to start thread")
+    def run(self):
+        audio = audioProcessing.AudioProcessor()
+        self.cont.setN = audio.setNote
+        self.cont.unsetN = audio.unsetNote
 
+        while(self.cont.live):
+            audio.run(self.cont)
 
-while audio_system.live:
-    pass;
+        print("end of TT")
+
+class GUIThread(Thread):
+    def __init__(self,cont ):
+        Thread.__init__(self)
+        self.cont = cont
+    def run(self):
+        app = AppScreen(self.cont)
+        print("end of PP")
+
+audio_thread = AudioThread(audio_system);
+gui_thread = GUIThread(audio_system);
+audio_thread.start()
+gui_thread.start()
+
+audio_thread.join()
+gui_thread.join()
