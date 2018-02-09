@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Tk, Frame, TOP, BOTTOM
 from audioProcessing import AudioProcessor
 from buttons import RangeButton
 from keyboard import Keyboard
@@ -12,14 +12,14 @@ class AppScreen:
         master = Tk()
         frame = Frame(master)
         master.configure(background='#444')
-        master.protocol("WM_DELETE_WINDOW", self.close )
+        master.protocol("WM_DELETE_WINDOW", self.close)
         self.root = master
         frame.pack()
         self.frame = frame
         self.cont = cont
-        self.pitcher = RangeButton(frame,self.setPitch,10)
+        self.pitcher = RangeButton(frame, self.setPitch, 10)
         self.pitcher.pack(side=TOP)
-        self.keys = Keyboard(frame,cont)
+        self.keys = Keyboard(frame, cont)
         self.keys.pack(side=BOTTOM)
         master.mainloop()
 
@@ -28,7 +28,7 @@ class AppScreen:
         self.frame.quit()
         self.root.destroy()
         
-    def setPitch(self, level ):
+    def setPitch(self, level):
         self.cont.up(level)
 
 
@@ -37,7 +37,7 @@ audio_system = AudioSystem()
 
 class AudioThread(Thread):
 
-    def __init__(self, cont ):
+    def __init__(self, cont):
         Thread.__init__(self)
         self.cont = cont
 

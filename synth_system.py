@@ -22,5 +22,4 @@ class AudioSystem:
             self.unsetN(note)
         
     def up(self, level):
-        print(level)
         self.frequency = floor(level * 440/100)
