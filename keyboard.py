@@ -27,37 +27,37 @@ keymap = (
     "u"
 )
 
+black_keys = (1, 3, 6, 8, 10)
 
-def  key_to_note(event):
+
+def key_to_note(event):
     return keymap.index(event.char)
 
+
 def positionToNoteIndex (event):
-    #print (event.x, event.y);
     a = event.x
     return a
-
-def keyEventToIndex(event):
-    return ord(event.char) - 96
 
 
 class Keyboard (Canvas):
 
     def __init__(self, master, audio_system):
-        self.keyWidth = 20
-        self.keyHeigth =100
-        self.keyCount = 36
+        self.key_width = 20
+        self.key_height = 100
+        self.key_count = 36
         self.tools = audio_system
+
 
         Canvas.__init__(
             self,
             master,
-            width=self.keyWidth*self.keyCount, 
-            height=self.keyHeigth
+            width=self.key_width * self.key_count,
+            height=self.key_height
         )
 
         self.configure(
-            background = "#EEE",
-            borderwidth = 0
+            background="#777",
+            borderwidth=0
         )
         
         self.bind("<Button>",self.onMouseDown)
@@ -66,20 +66,20 @@ class Keyboard (Canvas):
         master.bind_all("<KeyRelease>", self.KeyRelease)
         self.drawScene()
 
-    def KeyPress(self,event):
+    def KeyPress(self, event):
         if event.char in keymap:
             note = key_to_note(event)
             self.tools.setNote(note)
             self.updateState()
     
-    def KeyRelease(self,event):
+    def KeyRelease(self, event):
         if event.char in keymap:
             note = key_to_note(event)
             self.tools.unsetNote(note)
             self.updateState()
 
     def noteFromEvent(self,event):
-        return int(positionToNoteIndex(event) / self.keyWidth)
+        return int(positionToNoteIndex(event) / self.key_width)
 
     def onMouseDown(self,event):
         self.tools.setNote(self.noteFromEvent(event))
@@ -94,27 +94,23 @@ class Keyboard (Canvas):
 
     def drawScene(self):
         self.delete("all")
-        for i in range(0, self.keyCount):
-            startX = i*self.keyWidth
-            heigth = self.keyHeigth
+        for i in range(0, self.key_count):
+            start_x = i*self.key_width
+            height = self.key_height
 
-            if(i in self.tools.notes):
-                heigth -= 10
+            if i in self.tools.notes:
+                height -= 10
 
             color = "white"
-            noteID = i % 12
+            note_id = i % 12
 
-            if(
-                noteID == 1 or noteID == 3 
-                or noteID == 6 or noteID == 8
-                or noteID == 10 
-            ):
+            if note_id in black_keys:
                 color = "black"
         
             self.create_rectangle(
-                startX,
+                start_x,
                 0, 
-                startX+self.keyWidth,
-                heigth,
+                start_x+self.key_width,
+                height,
                 fill=color,
             )

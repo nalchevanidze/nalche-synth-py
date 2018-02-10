@@ -1,7 +1,9 @@
 from math import floor
 from threading import Thread
 
-class ConnectingSystem:
+
+class SharedData:
+
     def __init__(self):
         self.frequency = 441
         self.live = True

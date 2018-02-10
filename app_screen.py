@@ -2,6 +2,7 @@ from buttons import RangeButton
 from keyboard import Keyboard
 from tkinter import Tk, Frame, TOP, BOTTOM
 
+
 class AppScreen:
 
     def __init__(self, cont):

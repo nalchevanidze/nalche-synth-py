@@ -6,6 +6,7 @@ from audio_config import SAMPLE_RATE
 
 LOOPSIZE = int(SAMPLE_RATE/100)
 
+
 def sine(sounds):
     c = []
     for i in range(0, LOOPSIZE):
@@ -18,21 +19,19 @@ def sine(sounds):
 
     return c
 
+
 sound = WaveLooper()
 soundList = [sound]
 soundSet = set([])
-
 soundList = [None] * 49
-
 active = set([])
 addInNextEvent = set([])
 removeInNextEvent = set([])
 
+
 class AudioProcessor:
 
     def __init__(self, cont):
-
-
 
         self.p = pyaudio.PyAudio()
         self.stream = self.p.open(
@@ -48,23 +47,19 @@ class AudioProcessor:
 
     def setNote(self, note):
 
-        if(soundList[note] == None):
+        if soundList[note] is None:
+
             sound_event = WaveLooper(note)
             addInNextEvent.add(sound_event)
             soundList[note] = sound_event
 
     def unsetNote(self, note):
 
-        soundEvent = soundList[note]
+        sound_event = soundList[note]
 
-        if(soundEvent != None):
-            removeInNextEvent.add(soundEvent)
+        if sound_event is not None:
+            removeInNextEvent.add(sound_event)
             soundList[note] = None
-
-    def run(self,cont):
-
-        if(cont.notes != -1):
-            self.tone()
 
     def tone(self):
 
@@ -74,7 +69,7 @@ class AudioProcessor:
 
     def start(self):
         while self.cont.live:
-            self.run(self.cont)
+            self.tone()
 
     def end(self):
             self.stream.close()
