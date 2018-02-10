@@ -10,6 +10,7 @@ def percent_from_degree(angle):
         degree += 180
     return degree
 
+
 class RangeButton(Canvas):
 
     def __init__(self, master, callback, level, steps=12):

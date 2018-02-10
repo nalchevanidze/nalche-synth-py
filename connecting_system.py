@@ -1,7 +1,7 @@
 from math import floor
+from threading import Thread
 
-
-class AudioSystem:
+class ConnectingSystem:
     def __init__(self):
         self.frequency = 441
         self.live = True
@@ -23,3 +23,15 @@ class AudioSystem:
         
     def up(self, level):
         self.frequency = floor(level * 440/100)
+
+
+class ConnectingTread(Thread):
+
+    def __init__(self, builder, cont):
+        Thread.__init__(self)
+        self.cont = cont
+        self.builder = builder
+
+    def run(self):
+        instance = self.builder(self.cont)
+        instance.start()

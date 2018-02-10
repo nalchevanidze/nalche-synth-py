@@ -18,7 +18,7 @@ def sine(sounds):
 
     return c
 
-sound = WaveLooper();
+sound = WaveLooper()
 soundList = [sound]
 soundSet = set([])
 
@@ -49,9 +49,9 @@ class AudioProcessor:
     def setNote(self, note):
 
         if(soundList[note] == None):
-            soundEvent = WaveLooper(note)
-            addInNextEvent.add(soundEvent)
-            soundList[note] = soundEvent
+            sound_event = WaveLooper(note)
+            addInNextEvent.add(sound_event)
+            soundList[note] = sound_event
 
     def unsetNote(self, note):
 
